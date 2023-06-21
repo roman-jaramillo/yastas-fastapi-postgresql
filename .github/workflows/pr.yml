@@ -1,0 +1,18 @@
+name: Build Cookiecutter Template Project
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Cookiecutter
+        run: pip install cookiecutter
+      - name: Create Cookiecutter Project
+        run: cookiecutter --no-input -f .
+      - name: Build Project
+        run: cd base-project && make up-quiet
+      - name: Run Tests
+        run: cd base-project && make test
