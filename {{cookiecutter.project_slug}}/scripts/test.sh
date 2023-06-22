@@ -10,8 +10,6 @@ if [ $(uname -s) = "Linux" ]; then
     sudo find . -type d -name __pycache__ -exec rm -r {} \+
 fi
 
-INSTALL_DEV=true \
 docker compose build
 docker compose up -d
-sleep 2
 docker compose exec -T api bash /app/tests-start.sh $1
