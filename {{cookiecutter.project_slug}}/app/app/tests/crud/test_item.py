@@ -1,9 +1,12 @@
+import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
 from app.schemas.item import ItemCreate, ItemUpdate
 from app.tests.utils.user import create_random_user
 from app.tests.utils.utils import random_lower_string
+
+pytestmark = pytest.mark.asyncio
 
 
 async def test_create_item(db: AsyncSession) -> None:

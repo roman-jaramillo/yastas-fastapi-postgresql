@@ -8,13 +8,10 @@ from app.tests.utils.item import create_random_item
 pytestmark = pytest.mark.asyncio
 
 
-async def test_create_item(
-    client: AsyncClient, superuser_token_headers: dict, db: AsyncSession
-) -> None:
+async def test_create_item(client: AsyncClient, db: AsyncSession) -> None:
     data = {"title": "Foo", "description": "Fighters"}
     response = await client.post(
         f"{settings.API_V1_STR}/items/",
-        headers=superuser_token_headers,
         json=data,
     )
     assert response.status_code == 200
@@ -25,13 +22,10 @@ async def test_create_item(
     assert "owner_id" in content
 
 
-async def test_read_item(
-    client: AsyncClient, superuser_token_headers: dict, db: AsyncSession
-) -> None:
+async def test_read_item(client: AsyncClient, db: AsyncSession) -> None:
     item = await create_random_item(db)
     response = await client.get(
         f"{settings.API_V1_STR}/items/{item.id}",
-        headers=superuser_token_headers,
     )
     assert response.status_code == 200
     content = response.json()
