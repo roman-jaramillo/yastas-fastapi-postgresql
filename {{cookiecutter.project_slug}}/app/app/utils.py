@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, Optional
 import google.cloud.logging
-from google.cloud.logging_v2.handlers import CloudLoggingHandler
 
 import emails
 from emails.template import JinjaTemplate
@@ -109,14 +108,10 @@ def verify_password_reset_token(token: str) -> Optional[str]:
 
 
 def get_logger(name):
+    #Create client from gcp and set it up
     client = google.cloud.logging.Client()
-    logger = logging.getLogger(name)
-
-    #Level should be changed depending on the environment (prod,dev)
-    logger.setLevel(logging.DEBUG) 
+    client.setup_logging() #Can use flag "level=Debbug" to change logger Level, default "INFO"
     
-    #Configure the log handler
-    handler = CloudLoggingHandler(client)
-    logger.addHandler(handler)
+    logger = logging.getLogger(name)
 
     return logger
