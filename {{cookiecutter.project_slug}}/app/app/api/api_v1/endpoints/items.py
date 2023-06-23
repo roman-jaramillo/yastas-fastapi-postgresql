@@ -7,7 +7,7 @@ from app import crud, schemas
 from app.api import deps
 
 from dependency_injector.wiring import inject, Provide
-from app import container
+from app.container import Container
 
 router = APIRouter()
 
@@ -15,7 +15,7 @@ router = APIRouter()
 @router.get("/", response_model=List[schemas.Item])
 @inject
 async def read_items(
-    db: AsyncSession = Depends(Provide[container.get_db]),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     skip: int = 0,
     limit: int = 100,
 ) -> Any:
@@ -30,7 +30,7 @@ async def read_items(
 @inject
 async def create_item(
     *,
-    db: AsyncSession = Depends(Provide[container.get_db]),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     item_in: schemas.ItemCreate,
 ) -> Any:
     """
@@ -44,7 +44,7 @@ async def create_item(
 @inject
 async def update_item(
     *,
-    db: AsyncSession = Depends(Provide[container.get_db]),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
     item_in: schemas.ItemUpdate,
 ) -> Any:
@@ -62,7 +62,7 @@ async def update_item(
 @inject
 async def read_item(
     *,
-    db: AsyncSession = Depends(Provide[container.get_db]),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
 ) -> Any:
     """
@@ -78,7 +78,7 @@ async def read_item(
 @inject
 async def delete_item(
     *,
-    db: AsyncSession = Depends(Provide[container.get_db]),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
 ) -> Any:
     """
