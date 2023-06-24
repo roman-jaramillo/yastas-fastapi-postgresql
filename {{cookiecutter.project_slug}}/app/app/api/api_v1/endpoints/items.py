@@ -6,12 +6,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import crud, schemas
 from app.api import deps
 
+from dependency_injector.wiring import inject, Provide
+from app.container import Container
+
 router = APIRouter()
 
 
 @router.get("/", response_model=List[schemas.Item])
+@inject
 async def read_items(
-    db: AsyncSession = Depends(deps.get_db),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     skip: int = 0,
     limit: int = 100,
 ) -> Any:
@@ -23,9 +27,10 @@ async def read_items(
 
 
 @router.post("/", response_model=schemas.Item)
+@inject
 async def create_item(
     *,
-    db: AsyncSession = Depends(deps.get_db),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     item_in: schemas.ItemCreate,
 ) -> Any:
     """
@@ -36,9 +41,10 @@ async def create_item(
 
 
 @router.put("/{id}", response_model=schemas.Item)
+@inject
 async def update_item(
     *,
-    db: AsyncSession = Depends(deps.get_db),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
     item_in: schemas.ItemUpdate,
 ) -> Any:
@@ -53,9 +59,10 @@ async def update_item(
 
 
 @router.get("/{id}", response_model=schemas.Item)
+@inject
 async def read_item(
     *,
-    db: AsyncSession = Depends(deps.get_db),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
 ) -> Any:
     """
@@ -68,9 +75,10 @@ async def read_item(
 
 
 @router.delete("/{id}", response_model=schemas.Item)
+@inject
 async def delete_item(
     *,
-    db: AsyncSession = Depends(deps.get_db),
+    db: AsyncSession = Depends(Provide[Container.get_db]),
     id: int,
 ) -> Any:
     """
