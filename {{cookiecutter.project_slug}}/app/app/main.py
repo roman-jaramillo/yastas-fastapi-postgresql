@@ -5,7 +5,7 @@ from app.api.api_v1.api import api_router
 from app.api.api_v1 import endpoints
 from app.core.config import settings
 
-from container import Container
+from .container import Container
 
 container = Container()
 container.wire(packages=[endpoints])
